@@ -1,6 +1,10 @@
-import Link from "next/link";
 import { UpdateAlertForm } from "@/components/transactions/update-alert-form";
-import { ListChecksIcon } from "@/components/ui/icons";
+import { WorkflowShell } from "@/components/dashboard/workflow-shell";
+import {
+  ActivityIcon,
+  ListChecksIcon,
+  ShieldCheckIcon,
+} from "@/components/ui/icons";
 import { canManageTenant } from "@/lib/auth-shared";
 import { getTenantContext } from "@/lib/auth";
 import { hasSupabaseEnv } from "@/lib/env";
@@ -35,35 +39,85 @@ export default async function UpdateAlertStatusPage() {
     id: alert.id,
     label: `${formatLabel(alert.alertType)} • ${alert.customerName} • ${formatLabel(alert.status)}`,
   }));
+  const notices = [];
+
+  if (!isSupabaseEnabled) {
+    notices.push({
+      tone: "info" as const,
+      message:
+        "Supabase environment variables are missing, so alert updates are disabled.",
+    });
+  }
+
+  if (isSupabaseEnabled && tenantContext && !canManage) {
+    notices.push({
+      tone: "warning" as const,
+      message: "Your role can review alerts but cannot change alert status.",
+    });
+  }
+
+  if (isSupabaseEnabled && canManage && alertOptions.length === 0) {
+    notices.push({
+      tone: "info" as const,
+      message: "No alerts are available right now. Ingest transactions or wait for monitoring rules to generate them.",
+    });
+  }
 
   return (
-    <section className="mx-auto w-full max-w-4xl space-y-6">
-      <article className="panel rounded-[2rem] p-6 md:p-8">
-        <div className="flex items-center gap-3">
-          <span className="inline-flex rounded-xl bg-ink p-2 text-shell">
-            <ListChecksIcon />
-          </span>
-          <p className="text-xs uppercase tracking-[0.3em] text-ink/55">Alert workflow</p>
-        </div>
-        <h1 className="mt-4 font-[var(--font-display)] text-4xl leading-tight text-ink">
-          Update alert status
-        </h1>
-        <p className="mt-3 text-sm leading-7 text-ink/72">
-          Transition alerts to acknowledged or resolved after review.
-        </p>
-      </article>
-
-      <article className="panel rounded-[2rem] p-6 md:p-8">
-        <UpdateAlertForm disabled={!isSupabaseEnabled || !canManage} alerts={alertOptions} />
-        <div className="mt-6">
-          <Link
-            href="/monitoring"
-            className="inline-flex rounded-xl border border-ink/15 px-4 py-2.5 text-sm font-semibold text-ink transition hover:border-ink/30 hover:bg-white"
-          >
-            Back to monitoring
-          </Link>
-        </div>
-      </article>
-    </section>
+    <WorkflowShell
+      backHref="/monitoring"
+      backLabel="Back to monitoring"
+      eyebrow="Alert workflow"
+      title="Update alert status"
+      description="Transition monitoring alerts into acknowledged or resolved states after analyst review."
+      icon={ListChecksIcon}
+      formTitle="Alert resolution"
+      formDescription="Select an open alert and update its workflow state so the monitoring queue reflects current analyst action."
+      facts={[
+        {
+          label: "Alerts",
+          value: `${alertOptions.length}`,
+          detail: alertOptions.length > 0 ? "Available for analyst action" : "Waiting on monitoring output",
+        },
+        {
+          label: "Access",
+          value: canManage ? "Resolve" : "Review",
+          detail: canManage ? "Status changes enabled" : "Execution disabled",
+        },
+        {
+          label: "Output",
+          value: "State",
+          detail: "Acknowledged or resolved status",
+        },
+      ]}
+      notices={notices}
+      railEyebrow="Resolution notes"
+      railTitle="Close alerts cleanly"
+      railDescription="An alert status update should leave an obvious audit trail and clear operational signal for the next analyst."
+      steps={[
+        {
+          title: "Select the alert",
+          detail: "Pick the exact alert record you reviewed in the monitoring queue.",
+          icon: ListChecksIcon,
+        },
+        {
+          title: "Confirm the outcome",
+          detail: "Move the alert into the correct lifecycle state once the review is complete.",
+          icon: ActivityIcon,
+        },
+        {
+          title: "Escalate when needed",
+          detail: "If the signal warrants deeper review, convert it into a formal case workflow.",
+          icon: ShieldCheckIcon,
+        },
+      ]}
+      railLink={{ href: "/cases/new", label: "Open a related case" }}
+      visual={{
+        src: "/compliance-grid-visual.svg",
+        alt: "Alert resolution workflow illustration",
+      }}
+    >
+      <UpdateAlertForm disabled={!isSupabaseEnabled || !canManage} alerts={alertOptions} />
+    </WorkflowShell>
   );
 }

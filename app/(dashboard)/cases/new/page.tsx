@@ -1,6 +1,10 @@
-import Link from "next/link";
 import { CreateCaseForm } from "@/components/cases/create-case-form";
-import { ListChecksIcon } from "@/components/ui/icons";
+import { WorkflowShell } from "@/components/dashboard/workflow-shell";
+import {
+  ActivityIcon,
+  ListChecksIcon,
+  UsersIcon,
+} from "@/components/ui/icons";
 import { canManageTenant } from "@/lib/auth-shared";
 import { getTenantContext } from "@/lib/auth";
 import { hasSupabaseEnv } from "@/lib/env";
@@ -51,39 +55,89 @@ export default async function NewCasePage() {
     id: item.id,
     label: `${item.fullName ?? item.email} (${item.email})`,
   }));
+  const notices = [];
+
+  if (!isSupabaseEnabled) {
+    notices.push({
+      tone: "info" as const,
+      message:
+        "Supabase environment variables are missing, so case creation is disabled.",
+    });
+  }
+
+  if (isSupabaseEnabled && tenantContext && !canManage) {
+    notices.push({
+      tone: "warning" as const,
+      message: "Your role can review cases but cannot create new ones.",
+    });
+  }
+
+  if (isSupabaseEnabled && canManage && sessionOptions.length === 0) {
+    notices.push({
+      tone: "info" as const,
+      message: "No verification sessions are available right now. You can still create a standalone case.",
+    });
+  }
 
   return (
-    <section className="mx-auto w-full max-w-4xl space-y-6">
-      <article className="panel rounded-[2rem] p-6 md:p-8">
-        <div className="flex items-center gap-3">
-          <span className="inline-flex rounded-xl bg-ink p-2 text-shell">
-            <ListChecksIcon />
-          </span>
-          <p className="text-xs uppercase tracking-[0.3em] text-ink/55">Case creation</p>
-        </div>
-        <h1 className="mt-4 font-[var(--font-display)] text-4xl leading-tight text-ink">
-          Create a case
-        </h1>
-        <p className="mt-3 text-sm leading-7 text-ink/72">
-          Open a case from verification context and assign to a compliance officer.
-        </p>
-      </article>
-
-      <article className="panel rounded-[2rem] p-6 md:p-8">
-        <CreateCaseForm
-          disabled={!isSupabaseEnabled || !canManage}
-          verificationSessions={sessionOptions}
-          officers={officerOptions}
-        />
-        <div className="mt-6">
-          <Link
-            href="/cases"
-            className="inline-flex rounded-xl border border-ink/15 px-4 py-2.5 text-sm font-semibold text-ink transition hover:border-ink/30 hover:bg-white"
-          >
-            Back to cases
-          </Link>
-        </div>
-      </article>
-    </section>
+    <WorkflowShell
+      backHref="/cases"
+      backLabel="Back to cases"
+      eyebrow="Case creation"
+      title="Create a case"
+      description="Open a manual review case from verification context or as a standalone escalation, then assign ownership."
+      icon={ListChecksIcon}
+      formTitle="Escalation brief"
+      formDescription="Set the case priority, optionally link it to a verification session, and capture the first notes for the review team."
+      facts={[
+        {
+          label: "Sessions",
+          value: `${sessionOptions.length}`,
+          detail: "Optional source context",
+        },
+        {
+          label: "Officers",
+          value: `${officerOptions.length}`,
+          detail: "Assignment is optional",
+        },
+        {
+          label: "Access",
+          value: canManage ? "Create" : "Review",
+          detail: canManage ? "Case creation enabled" : "Execution disabled",
+        },
+      ]}
+      notices={notices}
+      railEyebrow="Escalation guide"
+      railTitle="Create useful cases"
+      railDescription="A strong case record makes later resolution, audit, and reporting work dramatically easier."
+      steps={[
+        {
+          title: "Link source context",
+          detail: "Attach the verification session when the case is tied to onboarding or screening evidence.",
+          icon: UsersIcon,
+        },
+        {
+          title: "Set urgency clearly",
+          detail: "Choose a priority level that reflects the operational risk and review SLA.",
+          icon: ActivityIcon,
+        },
+        {
+          title: "Capture reviewer intent",
+          detail: "Use notes to leave a crisp handoff for the assigned officer or next reviewer.",
+          icon: ListChecksIcon,
+        },
+      ]}
+      railLink={{ href: "/cases/update", label: "Update open cases next" }}
+      visual={{
+        src: "/landing-compliance-visual.svg",
+        alt: "Case creation workflow illustration",
+      }}
+    >
+      <CreateCaseForm
+        disabled={!isSupabaseEnabled || !canManage}
+        verificationSessions={sessionOptions}
+        officers={officerOptions}
+      />
+    </WorkflowShell>
   );
 }

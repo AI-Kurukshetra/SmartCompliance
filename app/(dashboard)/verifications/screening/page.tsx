@@ -1,6 +1,10 @@
-import Link from "next/link";
 import { RunScreeningForm } from "@/components/watchlist/run-screening-form";
-import { ShieldCheckIcon } from "@/components/ui/icons";
+import { WorkflowShell } from "@/components/dashboard/workflow-shell";
+import {
+  ActivityIcon,
+  ListChecksIcon,
+  ShieldCheckIcon,
+} from "@/components/ui/icons";
 import { canManageTenant } from "@/lib/auth-shared";
 import { getTenantContext } from "@/lib/auth";
 import { hasSupabaseEnv } from "@/lib/env";
@@ -35,40 +39,88 @@ export default async function RunScreeningPage() {
     id: session.id,
     label: `${session.customerName} • ${formatLabel(session.status)}`,
   }));
+  const notices = [];
+
+  if (!isSupabaseEnabled) {
+    notices.push({
+      tone: "info" as const,
+      message:
+        "Supabase environment variables are missing, so screening runs are disabled.",
+    });
+  }
+
+  if (isSupabaseEnabled && tenantContext && !canManage) {
+    notices.push({
+      tone: "warning" as const,
+      message: "Your role can review watchlist outcomes but cannot trigger screening runs.",
+    });
+  }
+
+  if (isSupabaseEnabled && canManage && sessionOptions.length === 0) {
+    notices.push({
+      tone: "info" as const,
+      message: "No verification sessions are available. Start a session before running screening.",
+    });
+  }
 
   return (
-    <section className="mx-auto w-full max-w-4xl space-y-6">
-      <article className="panel rounded-[2rem] p-6 md:p-8">
-        <div className="flex items-center gap-3">
-          <span className="inline-flex rounded-xl bg-ink p-2 text-shell">
-            <ShieldCheckIcon />
-          </span>
-          <p className="text-xs uppercase tracking-[0.3em] text-ink/55">
-            Watchlist providers
-          </p>
-        </div>
-        <h1 className="mt-4 font-[var(--font-display)] text-4xl leading-tight text-ink">
-          Run watchlist screening
-        </h1>
-        <p className="mt-3 text-sm leading-7 text-ink/72">
-          Execute provider checks and persist screening outcomes.
-        </p>
-      </article>
-
-      <article className="panel rounded-[2rem] p-6 md:p-8">
-        <RunScreeningForm
-          disabled={!isSupabaseEnabled || !canManage}
-          sessions={sessionOptions}
-        />
-        <div className="mt-6">
-          <Link
-            href="/verifications"
-            className="inline-flex rounded-xl border border-ink/15 px-4 py-2.5 text-sm font-semibold text-ink transition hover:border-ink/30 hover:bg-white"
-          >
-            Back to verifications
-          </Link>
-        </div>
-      </article>
-    </section>
+    <WorkflowShell
+      backHref="/verifications"
+      backLabel="Back to verifications"
+      eyebrow="Watchlist providers"
+      title="Run watchlist screening"
+      description="Execute provider checks against an active verification session and persist the resulting screening outcomes."
+      icon={ShieldCheckIcon}
+      formTitle="Screening trigger"
+      formDescription="Choose the session that should receive watchlist results, then launch the provider workflow for that customer."
+      facts={[
+        {
+          label: "Sessions",
+          value: `${sessionOptions.length}`,
+          detail: sessionOptions.length > 0 ? "Available for provider checks" : "Create a session first",
+        },
+        {
+          label: "Access",
+          value: canManage ? "Run" : "Review",
+          detail: canManage ? "Provider calls enabled" : "Execution disabled",
+        },
+        {
+          label: "Output",
+          value: "Matches",
+          detail: "Persisted screening outcomes",
+        },
+      ]}
+      notices={notices}
+      railEyebrow="Provider runbook"
+      railTitle="Screening discipline"
+      railDescription="A screening run is only useful when it lands on the correct session and is reviewed with the right downstream context."
+      steps={[
+        {
+          title: "Select the active case",
+          detail: "Run screening on the customer session that owns the current onboarding decision.",
+          icon: ShieldCheckIcon,
+        },
+        {
+          title: "Trigger provider checks",
+          detail: "Execute placeholder provider logic and capture any match signals.",
+          icon: ActivityIcon,
+        },
+        {
+          title: "Persist the outcome",
+          detail: "Results remain available for risk scoring, manual review, and audit history.",
+          icon: ListChecksIcon,
+        },
+      ]}
+      railLink={{ href: "/verifications/decision", label: "Run decision next" }}
+      visual={{
+        src: "/landing-compliance-visual.svg",
+        alt: "Watchlist screening workflow illustration",
+      }}
+    >
+      <RunScreeningForm
+        disabled={!isSupabaseEnabled || !canManage}
+        sessions={sessionOptions}
+      />
+    </WorkflowShell>
   );
 }

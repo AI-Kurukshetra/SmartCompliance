@@ -1,6 +1,10 @@
-import Link from "next/link";
 import { UpdateCaseForm } from "@/components/cases/update-case-form";
-import { ActivityIcon } from "@/components/ui/icons";
+import { WorkflowShell } from "@/components/dashboard/workflow-shell";
+import {
+  ActivityIcon,
+  ListChecksIcon,
+  UsersIcon,
+} from "@/components/ui/icons";
 import { canManageTenant } from "@/lib/auth-shared";
 import { getTenantContext } from "@/lib/auth";
 import { hasSupabaseEnv } from "@/lib/env";
@@ -49,39 +53,89 @@ export default async function UpdateCasePage() {
     status: item.status,
     priority: item.priority,
   }));
+  const notices = [];
+
+  if (!isSupabaseEnabled) {
+    notices.push({
+      tone: "info" as const,
+      message:
+        "Supabase environment variables are missing, so case updates are disabled.",
+    });
+  }
+
+  if (isSupabaseEnabled && tenantContext && !canManage) {
+    notices.push({
+      tone: "warning" as const,
+      message: "Your role can review cases but cannot update case state.",
+    });
+  }
+
+  if (isSupabaseEnabled && canManage && caseOptions.length === 0) {
+    notices.push({
+      tone: "info" as const,
+      message: "No cases are available yet. Create a case before attempting an update.",
+    });
+  }
 
   return (
-    <section className="mx-auto w-full max-w-4xl space-y-6">
-      <article className="panel rounded-[2rem] p-6 md:p-8">
-        <div className="flex items-center gap-3">
-          <span className="inline-flex rounded-xl bg-ink p-2 text-shell">
-            <ActivityIcon />
-          </span>
-          <p className="text-xs uppercase tracking-[0.3em] text-ink/55">Case workflow</p>
-        </div>
-        <h1 className="mt-4 font-[var(--font-display)] text-4xl leading-tight text-ink">
-          Update case status
-        </h1>
-        <p className="mt-3 text-sm leading-7 text-ink/72">
-          Assign officers, set review status, and capture resolution decisions.
-        </p>
-      </article>
-
-      <article className="panel rounded-[2rem] p-6 md:p-8">
-        <UpdateCaseForm
-          disabled={!isSupabaseEnabled || !canManage}
-          cases={caseOptions}
-          officers={officerOptions}
-        />
-        <div className="mt-6">
-          <Link
-            href="/cases"
-            className="inline-flex rounded-xl border border-ink/15 px-4 py-2.5 text-sm font-semibold text-ink transition hover:border-ink/30 hover:bg-white"
-          >
-            Back to cases
-          </Link>
-        </div>
-      </article>
-    </section>
+    <WorkflowShell
+      backHref="/cases"
+      backLabel="Back to cases"
+      eyebrow="Case workflow"
+      title="Update case status"
+      description="Assign officers, set review status, request additional documents, and capture resolution decisions in one place."
+      icon={ActivityIcon}
+      formTitle="Case controls"
+      formDescription="Use this form to keep the review queue current and make sure every case handoff is reflected in the operating state."
+      facts={[
+        {
+          label: "Cases",
+          value: `${caseOptions.length}`,
+          detail: caseOptions.length > 0 ? "Available for update" : "Waiting on escalations",
+        },
+        {
+          label: "Officers",
+          value: `${officerOptions.length}`,
+          detail: "Assignable reviewers",
+        },
+        {
+          label: "Access",
+          value: canManage ? "Update" : "Review",
+          detail: canManage ? "Case controls enabled" : "Execution disabled",
+        },
+      ]}
+      notices={notices}
+      railEyebrow="Review controls"
+      railTitle="Move work with intent"
+      railDescription="Case updates should clarify ownership, resolution state, and the next evidence request without ambiguity."
+      steps={[
+        {
+          title: "Pick the active case",
+          detail: "Always update the exact case record that matches the review item you worked.",
+          icon: ListChecksIcon,
+        },
+        {
+          title: "Set ownership and outcome",
+          detail: "Adjust assignee, status, and decision together so the queue reflects reality.",
+          icon: UsersIcon,
+        },
+        {
+          title: "Request more evidence",
+          detail: "Trigger additional documentation only when the case truly needs customer follow-up.",
+          icon: ActivityIcon,
+        },
+      ]}
+      railLink={{ href: "/reports/new", label: "Generate follow-up reporting" }}
+      visual={{
+        src: "/compliance-grid-visual.svg",
+        alt: "Case update workflow illustration",
+      }}
+    >
+      <UpdateCaseForm
+        disabled={!isSupabaseEnabled || !canManage}
+        cases={caseOptions}
+        officers={officerOptions}
+      />
+    </WorkflowShell>
   );
 }

@@ -1,6 +1,10 @@
-import Link from "next/link";
 import { IngestTransactionForm } from "@/components/transactions/ingest-transaction-form";
-import { ActivityIcon } from "@/components/ui/icons";
+import { WorkflowShell } from "@/components/dashboard/workflow-shell";
+import {
+  ActivityIcon,
+  ListChecksIcon,
+  UsersIcon,
+} from "@/components/ui/icons";
 import { canManageTenant } from "@/lib/auth-shared";
 import { getTenantContext } from "@/lib/auth";
 import { hasSupabaseEnv } from "@/lib/env";
@@ -31,40 +35,88 @@ export default async function NewTransactionPage() {
     id: customer.id,
     label: `${customer.firstName} ${customer.lastName} (${customer.email ?? "no email"})`,
   }));
+  const notices = [];
+
+  if (!isSupabaseEnabled) {
+    notices.push({
+      tone: "info" as const,
+      message:
+        "Supabase environment variables are missing, so transaction ingestion is disabled.",
+    });
+  }
+
+  if (isSupabaseEnabled && tenantContext && !canManage) {
+    notices.push({
+      tone: "warning" as const,
+      message: "Your role can review monitoring data but cannot ingest new transactions.",
+    });
+  }
+
+  if (isSupabaseEnabled && canManage && customerOptions.length === 0) {
+    notices.push({
+      tone: "info" as const,
+      message: "No customers are available yet. Create a customer before submitting monitored transactions.",
+    });
+  }
 
   return (
-    <section className="mx-auto w-full max-w-4xl space-y-6">
-      <article className="panel rounded-[2rem] p-6 md:p-8">
-        <div className="flex items-center gap-3">
-          <span className="inline-flex rounded-xl bg-ink p-2 text-shell">
-            <ActivityIcon />
-          </span>
-          <p className="text-xs uppercase tracking-[0.3em] text-ink/55">
-            Monitoring intake
-          </p>
-        </div>
-        <h1 className="mt-4 font-[var(--font-display)] text-4xl leading-tight text-ink">
-          Ingest transaction
-        </h1>
-        <p className="mt-3 text-sm leading-7 text-ink/72">
-          Submit a transaction to run suspicious-pattern checks and alert generation.
-        </p>
-      </article>
-
-      <article className="panel rounded-[2rem] p-6 md:p-8">
-        <IngestTransactionForm
-          disabled={!isSupabaseEnabled || !canManage}
-          customers={customerOptions}
-        />
-        <div className="mt-6">
-          <Link
-            href="/monitoring"
-            className="inline-flex rounded-xl border border-ink/15 px-4 py-2.5 text-sm font-semibold text-ink transition hover:border-ink/30 hover:bg-white"
-          >
-            Back to monitoring
-          </Link>
-        </div>
-      </article>
-    </section>
+    <WorkflowShell
+      backHref="/monitoring"
+      backLabel="Back to monitoring"
+      eyebrow="Monitoring intake"
+      title="Ingest transaction"
+      description="Submit a transaction to run suspicious-pattern checks, customer-level rules, and alert generation."
+      icon={ActivityIcon}
+      formTitle="Transaction intake"
+      formDescription="Route a new transaction into the monitoring pipeline with the customer, amount, type, and geography needed for alert logic."
+      facts={[
+        {
+          label: "Customers",
+          value: `${customerOptions.length}`,
+          detail: customerOptions.length > 0 ? "Available for attribution" : "Create intake data first",
+        },
+        {
+          label: "Access",
+          value: canManage ? "Ingest" : "Review",
+          detail: canManage ? "Monitoring intake enabled" : "Execution disabled",
+        },
+        {
+          label: "Output",
+          value: "Alerts",
+          detail: "Pattern checks and alert creation",
+        },
+      ]}
+      notices={notices}
+      railEyebrow="Monitoring runbook"
+      railTitle="Stream discipline"
+      railDescription="Consistent attribution and transaction typing are what make monitoring signals explainable later."
+      steps={[
+        {
+          title: "Attach the right customer",
+          detail: "Use the correct customer record so transaction history stays tenant-scoped and traceable.",
+          icon: UsersIcon,
+        },
+        {
+          title: "Describe the movement",
+          detail: "Enter amount, currency, type, and country in the format expected by alert logic.",
+          icon: ActivityIcon,
+        },
+        {
+          title: "Review generated outcomes",
+          detail: "Flagged patterns will surface into the alert queue for analyst action.",
+          icon: ListChecksIcon,
+        },
+      ]}
+      railLink={{ href: "/monitoring/alerts", label: "Update alert statuses next" }}
+      visual={{
+        src: "/landing-compliance-visual.svg",
+        alt: "Monitoring intake workflow illustration",
+      }}
+    >
+      <IngestTransactionForm
+        disabled={!isSupabaseEnabled || !canManage}
+        customers={customerOptions}
+      />
+    </WorkflowShell>
   );
 }

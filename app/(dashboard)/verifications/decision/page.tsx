@@ -1,6 +1,10 @@
-import Link from "next/link";
 import { RunDecisionForm } from "@/components/risk/run-decision-form";
-import { ActivityIcon } from "@/components/ui/icons";
+import { WorkflowShell } from "@/components/dashboard/workflow-shell";
+import {
+  ActivityIcon,
+  ListChecksIcon,
+  ShieldCheckIcon,
+} from "@/components/ui/icons";
 import { canManageTenant } from "@/lib/auth-shared";
 import { getTenantContext } from "@/lib/auth";
 import { hasSupabaseEnv } from "@/lib/env";
@@ -35,38 +39,88 @@ export default async function RunDecisionPage() {
     id: session.id,
     label: `${session.customerName} • ${formatLabel(session.status)}`,
   }));
+  const notices = [];
+
+  if (!isSupabaseEnabled) {
+    notices.push({
+      tone: "info" as const,
+      message:
+        "Supabase environment variables are missing, so decision engine runs are disabled.",
+    });
+  }
+
+  if (isSupabaseEnabled && tenantContext && !canManage) {
+    notices.push({
+      tone: "warning" as const,
+      message: "Your role can review decisions but cannot trigger the decision engine.",
+    });
+  }
+
+  if (isSupabaseEnabled && canManage && sessionOptions.length === 0) {
+    notices.push({
+      tone: "info" as const,
+      message: "No verification sessions are available. Start a session before running the decision engine.",
+    });
+  }
 
   return (
-    <section className="mx-auto w-full max-w-4xl space-y-6">
-      <article className="panel rounded-[2rem] p-6 md:p-8">
-        <div className="flex items-center gap-3">
-          <span className="inline-flex rounded-xl bg-ink p-2 text-shell">
-            <ActivityIcon />
-          </span>
-          <p className="text-xs uppercase tracking-[0.3em] text-ink/55">Risk engine</p>
-        </div>
-        <h1 className="mt-4 font-[var(--font-display)] text-4xl leading-tight text-ink">
-          Run decision engine
-        </h1>
-        <p className="mt-3 text-sm leading-7 text-ink/72">
-          Evaluate risk profile and determine approve, reject, or manual review.
-        </p>
-      </article>
-
-      <article className="panel rounded-[2rem] p-6 md:p-8">
-        <RunDecisionForm
-          disabled={!isSupabaseEnabled || !canManage}
-          sessions={sessionOptions}
-        />
-        <div className="mt-6">
-          <Link
-            href="/verifications"
-            className="inline-flex rounded-xl border border-ink/15 px-4 py-2.5 text-sm font-semibold text-ink transition hover:border-ink/30 hover:bg-white"
-          >
-            Back to verifications
-          </Link>
-        </div>
-      </article>
-    </section>
+    <WorkflowShell
+      backHref="/verifications"
+      backLabel="Back to verifications"
+      eyebrow="Risk engine"
+      title="Run decision engine"
+      description="Evaluate the session risk profile and route the outcome to approve, reject, or manual review."
+      icon={ActivityIcon}
+      formTitle="Decision input"
+      formDescription="Choose the verification session that should receive the latest rule evaluation and automated decision output."
+      facts={[
+        {
+          label: "Sessions",
+          value: `${sessionOptions.length}`,
+          detail: sessionOptions.length > 0 ? "Ready for scoring" : "Create a session first",
+        },
+        {
+          label: "Access",
+          value: canManage ? "Execute" : "Review",
+          detail: canManage ? "Decision runs enabled" : "Execution disabled",
+        },
+        {
+          label: "Output",
+          value: "Decision",
+          detail: "Approve, reject, or review",
+        },
+      ]}
+      notices={notices}
+      railEyebrow="Decision flow"
+      railTitle="What the engine does"
+      railDescription="Rule scoring, document confidence, and screening context converge here into an operational outcome."
+      steps={[
+        {
+          title: "Read the session context",
+          detail: "Use the latest verification data, documents, and screening state as the scoring input.",
+          icon: ListChecksIcon,
+        },
+        {
+          title: "Apply risk logic",
+          detail: "Evaluate the current rule set against the customer’s evidence and posture.",
+          icon: ActivityIcon,
+        },
+        {
+          title: "Route the outcome",
+          detail: "Persist an automated decision or push the session into manual review.",
+          icon: ShieldCheckIcon,
+        },
+      ]}
+      railLink={{ href: "/cases/new", label: "Escalate manual review into a case" }}
+      visual={{
+        src: "/landing-compliance-visual.svg",
+        alt: "Decision engine workflow illustration",
+      }}
+    >
+      <RunDecisionForm
+        disabled={!isSupabaseEnabled || !canManage}
+        sessions={sessionOptions}
+      />
+    </WorkflowShell>
   );
 }
