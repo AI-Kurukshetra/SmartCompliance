@@ -1,0 +1,102 @@
+openapi: 3.0.0
+info:
+  title: SmartCompliance API
+  version: 1.0.0
+
+servers:
+  - url: /api
+
+paths:
+
+  /customers:
+    get:
+      summary: List customers
+      responses:
+        '200':
+          description: Customer list
+
+    post:
+      summary: Create customer
+      requestBody:
+        required: true
+      responses:
+        '201':
+          description: Customer created
+
+  /customers/{id}:
+    get:
+      summary: Get customer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+
+  /verifications:
+    post:
+      summary: Start verification
+      responses:
+        '200':
+          description: Verification started
+
+  /verifications/{id}:
+    get:
+      summary: Get verification status
+
+  /documents:
+    post:
+      summary: Upload verification document
+
+  /watchlist:
+    post:
+      summary: Run watchlist screening
+
+  /cases:
+    get:
+      summary: List compliance cases
+    post:
+      summary: Create a compliance case
+
+  /cases/{id}:
+    patch:
+      summary: Update case decision
+
+  /rules:
+    get:
+      summary: List rules
+
+    post:
+      summary: Create rule
+
+  /transactions:
+    get:
+      summary: List monitored transactions
+    post:
+      summary: Ingest transaction and run monitoring rules
+
+  /transactions/alerts:
+    get:
+      summary: List generated monitoring alerts
+
+  /transactions/alerts/{alertId}:
+    patch:
+      summary: Update monitoring alert status
+
+  /reports:
+    get:
+      summary: List report jobs
+    post:
+      summary: Generate compliance report
+
+  /reports/{reportId}/export:
+    get:
+      summary: Export report as CSV or PDF
+
+  /analytics:
+    get:
+      summary: Load dashboard analytics metrics
+
+  /audit:
+    get:
+      summary: List audit trail events

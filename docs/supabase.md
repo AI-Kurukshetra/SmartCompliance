@@ -1,0 +1,2 @@
+Project URL = https://vqpouddcruljwodrrkkk.supabase.co
+Anon Key (Legacy) = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZxcG91ZGRjcnVsandvZHJya2trIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NjI0NTEsImV4cCI6MjA4OTAzODQ1MX0.2gw1oHbIx2lXCDYwMYM-4RUgXI05hs4cWi7nKjuhrc0
