@@ -102,7 +102,7 @@ export default async function CustomersPage({
               <span className="inline-flex rounded-xl bg-ink p-2 text-shell">
                 <UsersIcon />
               </span>
-              <p className="text-xs uppercase tracking-[0.3em] text-ink/55">Customer data</p>
+              <p className="app-kicker">Customer data</p>
             </div>
             <h1 className="mt-3 font-[var(--font-display)] text-4xl leading-tight text-ink md:text-5xl">
               Customers
@@ -115,10 +115,10 @@ export default async function CustomersPage({
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href={canCreateCustomers ? "/customers/new" : "/customers"}
-              className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
+              className={`px-4 py-2 text-[11px] ${
                 canCreateCustomers
-                  ? "inline-flex items-center gap-2 bg-ink text-shell hover:bg-ink/92"
-                  : "cursor-not-allowed border border-ink/15 text-ink/45"
+                  ? "btn-primary inline-flex items-center gap-2"
+                  : "btn-secondary cursor-not-allowed border-ink/15 text-ink/45 opacity-50"
               }`}
               aria-disabled={!canCreateCustomers}
             >
@@ -129,21 +129,21 @@ export default async function CustomersPage({
         </div>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          <div className="rounded-[1.25rem] border border-ink/10 bg-white/82 p-4">
-            <p className="text-xs uppercase tracking-[0.3em] text-ink/55">Visible</p>
+          <div className="rounded-[1.25rem] border border-ink/10 bg-white/84 p-4">
+            <p className="app-kicker">Visible</p>
             <p className="mt-2 font-[var(--font-display)] text-3xl text-ink">
               {filteredCount}
             </p>
           </div>
-          <div className="rounded-[1.25rem] border border-ink/10 bg-white/82 p-4">
-            <p className="text-xs uppercase tracking-[0.3em] text-ink/55">Workspace</p>
+          <div className="rounded-[1.25rem] border border-ink/10 bg-white/84 p-4">
+            <p className="app-kicker">Workspace</p>
             <p className="mt-2 text-base font-semibold text-ink">
               {tenantContext?.tenantName ?? "Preview mode"}
             </p>
             <p className="text-xs text-ink/58">{tenantContext?.tenantSlug ?? "No tenant"}</p>
           </div>
-          <div className="rounded-[1.25rem] border border-ink/10 bg-white/82 p-4">
-            <p className="text-xs uppercase tracking-[0.3em] text-ink/55">Capabilities</p>
+          <div className="rounded-[1.25rem] border border-ink/10 bg-white/84 p-4">
+            <p className="app-kicker">Capabilities</p>
             <p className="mt-2 text-sm text-ink/72">
               {canCreateCustomers ? "Create and review customers" : "Review-only access"}
             </p>
@@ -165,7 +165,7 @@ export default async function CustomersPage({
       <article className="panel rounded-[2rem] p-6 md:p-8">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.35em] text-ink/55">Roster</p>
+            <p className="app-kicker">Roster</p>
             <p className="mt-2 text-sm leading-7 text-ink/70">
               Search by name or email and filter by current risk posture.
             </p>
@@ -176,14 +176,14 @@ export default async function CustomersPage({
               <input
                 name="q"
                 defaultValue={filters.query ?? ""}
-                className="w-full rounded-xl border border-ink/15 bg-white py-2.5 pl-9 pr-3 text-sm text-ink outline-none placeholder:text-ink/35 focus:border-ink/35"
+                className="field-input field-input-icon py-[0.62rem]"
                 placeholder="Search name or email"
               />
             </label>
             <select
               name="risk"
               defaultValue={filters.risk ?? ""}
-              className="rounded-xl border border-ink/15 bg-white px-3 py-2.5 text-sm text-ink outline-none focus:border-ink/35"
+              className="field-input py-[0.62rem]"
             >
               <option value="">All risks</option>
               {CUSTOMER_RISK_LEVELS.map((riskLevel) => (
@@ -194,14 +194,14 @@ export default async function CustomersPage({
             </select>
             <button
               type="submit"
-              className="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-shell transition hover:bg-ink/92"
+              className="btn-primary px-4 py-2 text-[11px]"
             >
               Apply
             </button>
             {hasActiveFilters ? (
               <Link
                 href="/customers"
-                className="rounded-xl border border-ink/15 px-4 py-2.5 text-center text-sm font-semibold text-ink transition hover:border-ink/30 hover:bg-white"
+                className="btn-secondary px-4 py-2 text-[11px]"
               >
                 Reset
               </Link>
@@ -222,8 +222,13 @@ export default async function CustomersPage({
           </p>
         ) : null}
 
-        <div className="mt-6 overflow-hidden rounded-[1.2rem] border border-ink/10 bg-white/88">
-          <div className="hidden border-b border-ink/10 bg-shell/70 px-4 py-3 text-xs uppercase tracking-[0.24em] text-ink/52 md:grid md:grid-cols-[2fr_1.4fr_120px_100px_120px_90px]">
+        <p className="mt-6 text-sm text-ink/62">
+          Showing <span className="font-semibold text-ink">{filteredCount}</span> customer
+          records.
+        </p>
+
+        <div className="mt-3 overflow-hidden rounded-[1.2rem] border border-ink/12 bg-white/90">
+          <div className="hidden border-b border-ink/10 bg-ink/[0.035] px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/55 md:grid md:grid-cols-[2fr_1.4fr_120px_100px_120px_90px]">
             <p>Customer</p>
             <p>Contact</p>
             <p>Risk</p>
@@ -236,7 +241,7 @@ export default async function CustomersPage({
             customers.map((customer) => (
               <article
                 key={customer.id}
-                className="border-b border-ink/8 px-4 py-4 last:border-b-0 md:grid md:grid-cols-[2fr_1.4fr_120px_100px_120px_90px] md:items-center md:gap-3"
+                className="border-b border-ink/8 px-4 py-4 transition-colors hover:bg-signal/15 last:border-b-0 md:grid md:grid-cols-[2fr_1.4fr_120px_100px_120px_90px] md:items-center md:gap-3"
               >
                 <div>
                   <p className="font-semibold text-ink">
@@ -274,7 +279,7 @@ export default async function CustomersPage({
                   {canCreateCustomers ? (
                     <Link
                       href={`/customers/${customer.id}/edit`}
-                      className="inline-flex rounded-lg border border-ink/15 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-ink transition hover:border-ink/35 hover:bg-shell"
+                      className="btn-secondary px-3 py-1.5 text-[10px]"
                     >
                       Edit
                     </Link>

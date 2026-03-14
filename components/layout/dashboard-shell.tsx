@@ -12,12 +12,18 @@ export function DashboardShell({
   viewer?: DashboardViewer | null;
 }>) {
   return (
-    <div className="shell-grid min-h-screen bg-radial-shell px-4 py-4 md:px-6 md:py-6">
-      <div className="mx-auto grid min-h-[calc(100vh-2rem)] w-full max-w-7xl gap-4 lg:grid-cols-[280px_1fr]">
-        <SideNav preview={preview} viewer={viewer} />
-        <div className="flex min-h-full flex-col gap-4">
-          <TopBar preview={preview} viewer={viewer} />
-          <main className="flex-1 rounded-[2rem] border border-ink/10 bg-white/72 p-5 shadow-panel backdrop-blur-xl md:p-8">
+    <div className="shell-grid relative min-h-screen overflow-hidden bg-radial-shell px-3 py-3 md:px-5 md:py-5">
+      <div className="pointer-events-none absolute -right-24 top-10 h-72 w-72 rounded-full bg-[#d1efdf] blur-3xl float-slow" />
+      <div className="pointer-events-none absolute -left-20 bottom-16 h-72 w-72 rounded-full bg-[#ffe2c2] blur-3xl float-delay" />
+
+      <div className="mx-auto flex min-h-[calc(100vh-1.5rem)] w-full max-w-[1280px] flex-col gap-4">
+        <TopBar preview={preview} viewer={viewer} />
+
+        <div className="grid flex-1 gap-4 lg:grid-cols-[300px_1fr]">
+          <div className="order-2 lg:order-1">
+            <SideNav preview={preview} viewer={viewer} />
+          </div>
+          <main className="panel-strong order-1 flex-1 rounded-[1.8rem] p-4 sm:p-5 md:p-7 lg:order-2">
             {children}
           </main>
         </div>

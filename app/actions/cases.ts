@@ -91,6 +91,7 @@ export async function updateCaseAction(
     resolutionDecision: getField(formData, "resolutionDecision"),
     assignedTo: getField(formData, "assignedTo"),
     notes: getField(formData, "notes"),
+    requestAdditionalDocuments: getField(formData, "requestAdditionalDocuments"),
   };
 
   if (!hasSupabaseEnv()) {
@@ -123,11 +124,23 @@ export async function updateCaseAction(
     };
   }
 
+  const shouldRequestAdditionalDocuments =
+    values.requestAdditionalDocuments === "true" ||
+    values.requestAdditionalDocuments === "on" ||
+    values.requestAdditionalDocuments === "1";
+
+  const requestNote = "Additional documentation requested from customer.";
   const parsed = updateCaseSchema.safeParse({
-    status: values.status,
-    resolutionDecision: values.resolutionDecision,
+    status: shouldRequestAdditionalDocuments ? "in_review" : values.status,
+    resolutionDecision: shouldRequestAdditionalDocuments
+      ? undefined
+      : values.resolutionDecision,
     assignedTo: values.assignedTo,
-    notes: values.notes,
+    notes: shouldRequestAdditionalDocuments
+      ? values.notes
+        ? `${requestNote}\n${values.notes}`
+        : requestNote
+      : values.notes,
   });
 
   if (!parsed.success) {

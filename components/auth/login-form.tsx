@@ -13,13 +13,13 @@ type LoginFormProps = {
 };
 
 const inputClassName =
-  "w-full rounded-2xl border border-ink/14 bg-white px-12 py-3 text-sm text-ink shadow-[0_1px_0_rgba(9,24,43,0.03)] outline-none transition placeholder:text-ink/35 focus:border-ink/35 focus:ring-2 focus:ring-ink/10";
+  "field-input field-input-icon";
 
 export function LoginForm({ disabled = false }: LoginFormProps) {
   const [state, formAction] = useActionState(loginAction, INITIAL_AUTH_FORM_STATE);
 
   return (
-    <form action={formAction} className="grid gap-4">
+    <form action={formAction} className="grid gap-5">
       <label className="grid gap-2 text-sm font-medium text-ink">
         <span>Work email</span>
         <span className="relative">

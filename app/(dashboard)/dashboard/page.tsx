@@ -71,7 +71,7 @@ export default async function DashboardPage() {
               <span className="inline-flex rounded-xl bg-ink p-2 text-shell">
                 <ActivityIcon />
               </span>
-              <p className="text-xs uppercase tracking-[0.3em] text-ink/55">Control center</p>
+              <p className="app-kicker">Control center</p>
             </div>
             <h1 className="mt-4 font-[var(--font-display)] text-4xl leading-tight text-ink md:text-5xl">
               Compliance Dashboard
@@ -85,7 +85,7 @@ export default async function DashboardPage() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="rounded-xl border border-ink/15 px-3 py-2 text-sm font-semibold text-ink transition hover:border-ink/30 hover:bg-white"
+                  className="btn-secondary px-4 py-2 text-[11px]"
                 >
                   {link.label}
                 </Link>

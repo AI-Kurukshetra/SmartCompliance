@@ -34,6 +34,21 @@ const stats = [
   { label: "Regulatory output", value: "SAR + CTR", icon: ActivityIcon },
 ];
 
+const workflowSteps = [
+  {
+    title: "Capture",
+    detail: "Create customer and ingest KYC profile details in one structured flow.",
+  },
+  {
+    title: "Assess",
+    detail: "Run verification, screening, and dynamic risk scoring using shared context.",
+  },
+  {
+    title: "Act",
+    detail: "Escalate to cases, monitor alerts, and generate regulator-ready outputs.",
+  },
+];
+
 export default function HomePage() {
   return (
     <main className="shell-grid relative min-h-screen overflow-hidden px-4 py-6 md:px-8 md:py-8 lg:px-12">
@@ -41,27 +56,28 @@ export default function HomePage() {
       <div className="pointer-events-none absolute -left-20 bottom-20 h-80 w-80 rounded-full bg-[#ffe8cb] blur-3xl float-delay" />
 
       <div className="mx-auto flex max-w-7xl flex-col gap-8">
-        <header className="panel flex items-center justify-between rounded-[1.6rem] px-4 py-3 md:px-6">
+        <header className="panel flex flex-wrap items-center justify-between gap-3 rounded-[1.6rem] px-4 py-3 md:px-6">
           <div className="flex items-center gap-3">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-ink text-xs font-bold text-shell">
               SC
             </span>
-            <p className="text-xs uppercase tracking-[0.34em] text-ink/62">
-              SmartCompliance
-            </p>
+            <div>
+              <p className="app-kicker">SmartCompliance</p>
+              <p className="text-xs text-ink/58">Financial crime operations platform</p>
+            </div>
           </div>
           <nav className="flex items-center gap-2">
             <Link
               href="/login"
-              className="rounded-full border border-ink/20 bg-white px-4 py-2 text-sm font-semibold text-ink transition hover:border-ink/35"
+              className="btn-secondary px-4 py-2 text-[11px]"
             >
               Login
             </Link>
             <Link
               href="/signup"
-              className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-shell transition hover:bg-ink/90"
+              className="btn-primary px-4 py-2 text-[11px]"
             >
-              Sign up
+              Start workspace
             </Link>
           </nav>
         </header>
@@ -74,7 +90,7 @@ export default function HomePage() {
                 KYC • AML • Case Management
               </div>
               <h1 className="font-[var(--font-display)] text-5xl leading-[0.92] text-balance text-ink md:text-7xl">
-                Compliance infrastructure for onboarding and monitoring.
+                A clearer way to run compliance operations.
               </h1>
               <p className="max-w-2xl text-base leading-8 text-ink/72 md:text-lg">
                 SmartCompliance gives fintech teams a single control plane for
@@ -82,13 +98,13 @@ export default function HomePage() {
                 monitoring, case reviews, and regulatory reporting.
               </p>
 
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2 md:max-w-2xl">
                 <Link
                   href="/signup"
-                  className="rounded-[1.2rem] bg-ink px-5 py-4 text-shell transition hover:-translate-y-0.5 hover:bg-ink/92"
+                  className="rounded-[1.2rem] border border-ink/20 bg-ink px-5 py-4 text-shell transition hover:-translate-y-0.5 hover:bg-ink/92"
                 >
-                  <p className="text-xs uppercase tracking-[0.28em] text-shell/70">
-                    Launch workspace
+                  <p className="text-xs uppercase tracking-[0.28em] text-shell/72">
+                    Step 1
                   </p>
                   <p className="mt-2 text-lg font-semibold">Create account</p>
                   <p className="mt-2 text-sm text-shell/80">
@@ -100,7 +116,7 @@ export default function HomePage() {
                   className="rounded-[1.2rem] border border-ink/16 bg-white/90 px-5 py-4 transition hover:-translate-y-0.5 hover:border-ink/30"
                 >
                   <p className="text-xs uppercase tracking-[0.28em] text-ink/55">
-                    Existing workspace
+                    Returning team
                   </p>
                   <p className="mt-2 text-lg font-semibold text-ink">Open dashboard</p>
                   <p className="mt-2 text-sm text-ink/65">
@@ -113,10 +129,10 @@ export default function HomePage() {
                 {stats.map((stat) => (
                   <article
                     key={stat.label}
-                    className="rounded-[1rem] border border-ink/12 bg-white/86 px-4 py-3"
+                    className="rounded-[1rem] border border-ink/12 bg-white/88 px-4 py-3"
                   >
                     <stat.icon className="h-4 w-4 text-ink/55" />
-                    <p className="text-[11px] uppercase tracking-[0.24em] text-ink/52">
+                    <p className="mt-2 text-[11px] uppercase tracking-[0.24em] text-ink/52">
                       {stat.label}
                     </p>
                     <p className="mt-1.5 text-sm font-semibold text-ink">{stat.value}</p>
@@ -136,9 +152,17 @@ export default function HomePage() {
                   priority
                 />
               </div>
-              <p className="mt-4 rounded-[1rem] border border-ink/10 bg-shell px-4 py-3 text-xs uppercase tracking-[0.24em] text-ink/58">
-                Tenant-aware workflow from onboarding to reporting.
-              </p>
+              <div className="mt-4 space-y-2 rounded-[1rem] border border-ink/10 bg-shell/85 px-4 py-3">
+                <p className="text-xs uppercase tracking-[0.24em] text-ink/58">
+                  Tenant-aware workflow from onboarding to reporting.
+                </p>
+                {workflowSteps.map((step) => (
+                  <p key={step.title} className="text-sm leading-6 text-ink/72">
+                    <span className="font-semibold text-ink">{step.title}:</span>{" "}
+                    {step.detail}
+                  </p>
+                ))}
+              </div>
             </aside>
           </div>
         </section>
@@ -149,7 +173,7 @@ export default function HomePage() {
               <span className="inline-flex rounded-lg bg-ink p-2 text-shell">
                 <item.icon className="h-4 w-4" />
               </span>
-              <p className="text-xs uppercase tracking-[0.34em] text-ink/55">Capability</p>
+              <p className="app-kicker mt-3">Capability</p>
               <h2 className="mt-3 font-[var(--font-display)] text-[1.9rem] leading-tight text-ink">
                 {item.title}
               </h2>

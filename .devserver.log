@@ -1,0 +1,59 @@
+
+> smartcompliance@0.1.0 dev
+> next dev --port 3000
+
+   ▲ Next.js 15.5.12
+   - Local:        http://localhost:3000
+   - Network:      http://172.21.0.1:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 2.4s
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 2.4s (176 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 7.5s (693 modules)
+ GET / 200 in 104ms
+ ○ Compiling /rules ...
+ ✓ Compiled /rules in 1778ms (797 modules)
+ GET /rules 200 in 3915ms
+ ○ Compiling /icon.svg ...
+ ✓ Compiled /icon.svg in 559ms (548 modules)
+ GET /icon.svg?06b8ecc092e1f549 200 in 861ms
+ ✓ Compiled in 354ms (266 modules)
+ GET /rules 200 in 328ms
+ ○ Compiling /rules/new ...
+ ✓ Compiled /rules/new in 2.2s (991 modules)
+ GET /rules/new 200 in 3504ms
+ ✓ Compiled in 260ms (274 modules)
+ GET /rules/new 200 in 106ms
+ GET /rules 200 in 1005ms
+ POST /rules/new 303 in 2787ms
+ ✓ Compiled in 547ms (974 modules)
+ GET /rules 200 in 553ms
+ ✓ Compiled in 270ms (274 modules)
+ GET /rules 200 in 184ms
+ ✓ Compiled /rules/[ruleId]/edit in 469ms (968 modules)
+ GET /rules/cb885e74-1171-4f0f-ab13-a8e24c0ac518/edit 200 in 3292ms
+ ✓ Compiled in 312ms (276 modules)
+ ✓ Compiled in 230ms (276 modules)
+ GET /rules/cb885e74-1171-4f0f-ab13-a8e24c0ac518/edit 200 in 139ms
+ GET /rules/cb885e74-1171-4f0f-ab13-a8e24c0ac518/edit 200 in 123ms
+ GET /rules 200 in 1010ms
+ POST /rules/cb885e74-1171-4f0f-ab13-a8e24c0ac518/edit 303 in 3308ms
+ ✓ Compiled in 333ms (276 modules)
+ ○ Compiling /cases/update ...
+ ✓ Compiled /cases/update in 2.2s (985 modules)
+ GET /rules 200 in 3616ms
+ GET /cases/update 200 in 5520ms
+ ○ Compiling /cases ...
+ ✓ Compiled /cases in 840ms (989 modules)
+ GET /cases 200 in 141ms
+ GET /cases 200 in 2942ms
+ POST /cases/update 303 in 6404ms
+ ✓ Compiled in 4s (989 modules)
+ GET /cases 200 in 1255ms
+ ✓ Compiled in 375ms (281 modules)
+ ✓ Compiled in 553ms (281 modules)
+ GET /cases 200 in 275ms
+ GET /cases 200 in 255ms

@@ -214,6 +214,10 @@ export async function runRiskDecisionEngine(
       typeof condition.min_document_confidence === "number"
         ? condition.min_document_confidence
         : null;
+    const maxDocumentConfidence =
+      typeof condition.max_document_confidence === "number"
+        ? condition.max_document_confidence
+        : null;
 
     if (requiredStatuses.length > 0) {
       const matched = watchlistEntries.some((entry) =>
@@ -232,6 +236,13 @@ export async function runRiskDecisionEngine(
     if (
       typeof minDocumentConfidence === "number" &&
       bestDocumentConfidence < minDocumentConfidence
+    ) {
+      continue;
+    }
+
+    if (
+      typeof maxDocumentConfidence === "number" &&
+      bestDocumentConfidence > maxDocumentConfidence
     ) {
       continue;
     }

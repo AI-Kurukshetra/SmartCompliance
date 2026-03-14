@@ -125,7 +125,7 @@ export default async function CasesPage({ searchParams }: CasesPageProps) {
               <span className="inline-flex rounded-xl bg-ink p-2 text-shell">
                 <ListChecksIcon />
               </span>
-              <p className="text-xs uppercase tracking-[0.3em] text-ink/55">Case review</p>
+              <p className="app-kicker">Case review</p>
             </div>
             <h1 className="mt-4 font-[var(--font-display)] text-4xl leading-tight text-ink md:text-5xl">
               Cases
@@ -138,10 +138,10 @@ export default async function CasesPage({ searchParams }: CasesPageProps) {
             <Link
               href={canManage ? "/cases/new" : "/cases"}
               aria-disabled={!canManage}
-              className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
+              className={`px-4 py-2 text-[11px] ${
                 canManage
-                  ? "bg-ink text-shell hover:bg-ink/92"
-                  : "cursor-not-allowed border border-ink/15 text-ink/45"
+                  ? "btn-primary"
+                  : "btn-secondary cursor-not-allowed border-ink/15 text-ink/45 opacity-50"
               }`}
             >
               New case
@@ -149,10 +149,10 @@ export default async function CasesPage({ searchParams }: CasesPageProps) {
             <Link
               href={canManage ? "/cases/update" : "/cases"}
               aria-disabled={!canManage}
-              className={`rounded-xl border px-4 py-2.5 text-sm font-semibold transition ${
+              className={`px-4 py-2 text-[11px] ${
                 canManage
-                  ? "border-ink/20 text-ink hover:border-ink/35 hover:bg-white"
-                  : "cursor-not-allowed border-ink/15 text-ink/45"
+                  ? "btn-secondary"
+                  : "btn-secondary cursor-not-allowed border-ink/15 text-ink/45 opacity-50"
               }`}
             >
               Update case
@@ -160,16 +160,16 @@ export default async function CasesPage({ searchParams }: CasesPageProps) {
           </div>
         </div>
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          <article className="rounded-[1rem] border border-ink/10 bg-white/88 p-4">
-            <p className="text-xs uppercase tracking-[0.25em] text-ink/52">Open</p>
+          <article className="rounded-[1rem] border border-ink/10 bg-white/90 p-4">
+            <p className="app-kicker">Open</p>
             <p className="mt-1 text-2xl font-semibold text-ink">{openCount}</p>
           </article>
-          <article className="rounded-[1rem] border border-ink/10 bg-white/88 p-4">
-            <p className="text-xs uppercase tracking-[0.25em] text-ink/52">In review</p>
+          <article className="rounded-[1rem] border border-ink/10 bg-white/90 p-4">
+            <p className="app-kicker">In review</p>
             <p className="mt-1 text-2xl font-semibold text-ink">{reviewCount}</p>
           </article>
-          <article className="rounded-[1rem] border border-ink/10 bg-white/88 p-4">
-            <p className="text-xs uppercase tracking-[0.25em] text-ink/52">Resolved</p>
+          <article className="rounded-[1rem] border border-ink/10 bg-white/90 p-4">
+            <p className="app-kicker">Resolved</p>
             <p className="mt-1 text-2xl font-semibold text-ink">{closedCount}</p>
           </article>
         </div>
@@ -178,7 +178,7 @@ export default async function CasesPage({ searchParams }: CasesPageProps) {
       <article className="panel rounded-[2rem] p-6 md:p-8">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.32em] text-ink/52">Case queue</p>
+            <p className="app-kicker">Case queue</p>
             <p className="mt-2 text-sm text-ink/70">
               Filter by status, priority, assignee, or search text.
             </p>
@@ -187,13 +187,13 @@ export default async function CasesPage({ searchParams }: CasesPageProps) {
             <input
               name="q"
               defaultValue={filters.query ?? ""}
-              className="rounded-xl border border-ink/15 bg-white px-3 py-2.5 text-sm text-ink outline-none placeholder:text-ink/35 focus:border-ink/35"
+              className="field-input py-[0.62rem]"
               placeholder="Search customer or case"
             />
             <select
               name="status"
               defaultValue={filters.status ?? ""}
-              className="rounded-xl border border-ink/15 bg-white px-3 py-2.5 text-sm text-ink outline-none focus:border-ink/35"
+              className="field-input py-[0.62rem]"
             >
               <option value="">All status</option>
               {CASE_STATUSES.map((status) => (
@@ -205,7 +205,7 @@ export default async function CasesPage({ searchParams }: CasesPageProps) {
             <select
               name="priority"
               defaultValue={filters.priority ?? ""}
-              className="rounded-xl border border-ink/15 bg-white px-3 py-2.5 text-sm text-ink outline-none focus:border-ink/35"
+              className="field-input py-[0.62rem]"
             >
               <option value="">All priority</option>
               {CASE_PRIORITIES.map((priority) => (
@@ -217,7 +217,7 @@ export default async function CasesPage({ searchParams }: CasesPageProps) {
             <select
               name="assignedTo"
               defaultValue={filters.assignedTo ?? ""}
-              className="rounded-xl border border-ink/15 bg-white px-3 py-2.5 text-sm text-ink outline-none focus:border-ink/35"
+              className="field-input py-[0.62rem]"
             >
               <option value="">Any assignee</option>
               {officers.map((officer) => (
@@ -228,14 +228,14 @@ export default async function CasesPage({ searchParams }: CasesPageProps) {
             </select>
             <button
               type="submit"
-              className="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-shell transition hover:bg-ink/92"
+              className="btn-primary px-4 py-2 text-[11px]"
             >
               Apply
             </button>
             {hasActiveFilters ? (
               <Link
                 href="/cases"
-                className="rounded-xl border border-ink/15 px-4 py-2.5 text-center text-sm font-semibold text-ink transition hover:border-ink/30 hover:bg-white"
+                className="btn-secondary px-4 py-2 text-[11px]"
               >
                 Reset
               </Link>
@@ -243,8 +243,12 @@ export default async function CasesPage({ searchParams }: CasesPageProps) {
           </form>
         </div>
 
-        <div className="mt-6 overflow-hidden rounded-[1.2rem] border border-ink/10 bg-white/88">
-          <div className="hidden border-b border-ink/10 bg-shell/70 px-4 py-3 text-xs uppercase tracking-[0.24em] text-ink/52 md:grid md:grid-cols-[1.8fr_110px_110px_1fr_120px_120px]">
+        <p className="mt-6 text-sm text-ink/62">
+          Showing <span className="font-semibold text-ink">{cases.length}</span> case records.
+        </p>
+
+        <div className="mt-3 overflow-hidden rounded-[1.2rem] border border-ink/12 bg-white/90">
+          <div className="hidden border-b border-ink/10 bg-ink/[0.035] px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/55 md:grid md:grid-cols-[1.8fr_110px_110px_1fr_120px_120px]">
             <p>Case</p>
             <p>Status</p>
             <p>Priority</p>
@@ -256,7 +260,7 @@ export default async function CasesPage({ searchParams }: CasesPageProps) {
             cases.map((item) => (
               <article
                 key={item.id}
-                className="border-b border-ink/8 px-4 py-4 last:border-b-0 md:grid md:grid-cols-[1.8fr_110px_110px_1fr_120px_120px] md:items-center md:gap-3"
+                className="border-b border-ink/8 px-4 py-4 transition-colors hover:bg-signal/15 last:border-b-0 md:grid md:grid-cols-[1.8fr_110px_110px_1fr_120px_120px] md:items-center md:gap-3"
               >
                 <div>
                   <p className="font-semibold text-ink">{item.customerName}</p>

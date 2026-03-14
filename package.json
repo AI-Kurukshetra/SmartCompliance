@@ -8,7 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "seed:relevant": "node scripts/seed-relevant-data.mjs",
+    "seed:roles": "node scripts/seed-role-logins.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.5.0",
@@ -30,4 +32,3 @@
     "typescript": "^5.0.0"
   }
 }
-

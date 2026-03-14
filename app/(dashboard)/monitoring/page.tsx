@@ -158,9 +158,7 @@ export default async function MonitoringPage({
               <span className="inline-flex rounded-xl bg-ink p-2 text-shell">
                 <ActivityIcon />
               </span>
-              <p className="text-xs uppercase tracking-[0.3em] text-ink/55">
-                Transaction monitoring
-              </p>
+              <p className="app-kicker">Transaction monitoring</p>
             </div>
             <h1 className="mt-4 font-[var(--font-display)] text-4xl leading-tight text-ink md:text-5xl">
               Monitoring
@@ -173,10 +171,10 @@ export default async function MonitoringPage({
             <Link
               href={canManage ? "/monitoring/new" : "/monitoring"}
               aria-disabled={!canManage}
-              className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
+              className={`px-4 py-2 text-[11px] ${
                 canManage
-                  ? "bg-ink text-shell hover:bg-ink/92"
-                  : "cursor-not-allowed border border-ink/15 text-ink/45"
+                  ? "btn-primary"
+                  : "btn-secondary cursor-not-allowed border-ink/15 text-ink/45 opacity-50"
               }`}
             >
               Ingest transaction
@@ -184,10 +182,10 @@ export default async function MonitoringPage({
             <Link
               href={canManage ? "/monitoring/alerts" : "/monitoring"}
               aria-disabled={!canManage}
-              className={`rounded-xl border px-4 py-2.5 text-sm font-semibold transition ${
+              className={`px-4 py-2 text-[11px] ${
                 canManage
-                  ? "border-ink/20 text-ink hover:border-ink/35 hover:bg-white"
-                  : "cursor-not-allowed border-ink/15 text-ink/45"
+                  ? "btn-secondary"
+                  : "btn-secondary cursor-not-allowed border-ink/15 text-ink/45 opacity-50"
               }`}
             >
               Update alert
@@ -196,16 +194,16 @@ export default async function MonitoringPage({
         </div>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          <article className="rounded-[1rem] border border-ink/10 bg-white/88 p-4">
-            <p className="text-xs uppercase tracking-[0.25em] text-ink/52">Transactions</p>
+          <article className="rounded-[1rem] border border-ink/10 bg-white/90 p-4">
+            <p className="app-kicker">Transactions</p>
             <p className="mt-1 text-2xl font-semibold text-ink">{transactions.length}</p>
           </article>
-          <article className="rounded-[1rem] border border-ink/10 bg-white/88 p-4">
-            <p className="text-xs uppercase tracking-[0.25em] text-ink/52">Alerts</p>
+          <article className="rounded-[1rem] border border-ink/10 bg-white/90 p-4">
+            <p className="app-kicker">Alerts</p>
             <p className="mt-1 text-2xl font-semibold text-ink">{alerts.length}</p>
           </article>
-          <article className="rounded-[1rem] border border-ink/10 bg-white/88 p-4">
-            <p className="text-xs uppercase tracking-[0.25em] text-ink/52">Critical</p>
+          <article className="rounded-[1rem] border border-ink/10 bg-white/90 p-4">
+            <p className="app-kicker">Critical</p>
             <p className="mt-1 text-2xl font-semibold text-ink">
               {alerts.filter((item) => item.severity === "critical").length}
             </p>
@@ -216,20 +214,20 @@ export default async function MonitoringPage({
       <article className="panel rounded-[2rem] p-6 md:p-8">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.32em] text-ink/52">Transactions</p>
+            <p className="app-kicker">Transactions</p>
             <p className="mt-2 text-sm text-ink/70">Filter and review transaction stream.</p>
           </div>
           <form className="grid gap-2 sm:grid-cols-[minmax(170px,1fr)_150px_140px_auto_auto]">
             <input
               name="q"
               defaultValue={transactionFilters.query ?? ""}
-              className="rounded-xl border border-ink/15 bg-white px-3 py-2.5 text-sm text-ink outline-none placeholder:text-ink/35 focus:border-ink/35"
+              className="field-input py-[0.62rem]"
               placeholder="Search customer or type"
             />
             <select
               name="customerId"
               defaultValue={transactionFilters.customerId ?? ""}
-              className="rounded-xl border border-ink/15 bg-white px-3 py-2.5 text-sm text-ink outline-none focus:border-ink/35"
+              className="field-input py-[0.62rem]"
             >
               <option value="">All customers</option>
               {customers.map((customer) => (
@@ -241,7 +239,7 @@ export default async function MonitoringPage({
             <select
               name="txStatus"
               defaultValue={transactionFilters.status ?? ""}
-              className="rounded-xl border border-ink/15 bg-white px-3 py-2.5 text-sm text-ink outline-none focus:border-ink/35"
+              className="field-input py-[0.62rem]"
             >
               <option value="">All status</option>
               {TRANSACTION_STATUSES.map((status) => (
@@ -252,14 +250,14 @@ export default async function MonitoringPage({
             </select>
             <button
               type="submit"
-              className="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-shell transition hover:bg-ink/92"
+              className="btn-primary px-4 py-2 text-[11px]"
             >
               Apply
             </button>
             {hasActiveFilters ? (
               <Link
                 href="/monitoring"
-                className="rounded-xl border border-ink/15 px-4 py-2.5 text-center text-sm font-semibold text-ink transition hover:border-ink/30 hover:bg-white"
+                className="btn-secondary px-4 py-2 text-[11px]"
               >
                 Reset
               </Link>
@@ -267,8 +265,13 @@ export default async function MonitoringPage({
           </form>
         </div>
 
-        <div className="mt-6 overflow-hidden rounded-[1.2rem] border border-ink/10 bg-white/88">
-          <div className="hidden border-b border-ink/10 bg-shell/70 px-4 py-3 text-xs uppercase tracking-[0.24em] text-ink/52 md:grid md:grid-cols-[1.8fr_110px_110px_120px_120px]">
+        <p className="mt-6 text-sm text-ink/62">
+          Showing <span className="font-semibold text-ink">{transactions.length}</span> transaction
+          records.
+        </p>
+
+        <div className="mt-3 overflow-hidden rounded-[1.2rem] border border-ink/12 bg-white/90">
+          <div className="hidden border-b border-ink/10 bg-ink/[0.035] px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/55 md:grid md:grid-cols-[1.8fr_110px_110px_120px_120px]">
             <p>Customer / Type</p>
             <p>Amount</p>
             <p>Currency</p>
@@ -279,7 +282,7 @@ export default async function MonitoringPage({
             transactions.map((item) => (
               <article
                 key={item.id}
-                className="border-b border-ink/8 px-4 py-4 last:border-b-0 md:grid md:grid-cols-[1.8fr_110px_110px_120px_120px] md:items-center md:gap-3"
+                className="border-b border-ink/8 px-4 py-4 transition-colors hover:bg-signal/15 last:border-b-0 md:grid md:grid-cols-[1.8fr_110px_110px_120px_120px] md:items-center md:gap-3"
               >
                 <div>
                   <p className="font-semibold text-ink">{item.customerName}</p>
@@ -314,7 +317,7 @@ export default async function MonitoringPage({
       <article className="panel rounded-[2rem] p-6 md:p-8">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.32em] text-ink/52">Alerts</p>
+            <p className="app-kicker">Alerts</p>
             <p className="mt-2 text-sm text-ink/70">Review generated alerts and severity.</p>
           </div>
           <form className="grid gap-2 sm:grid-cols-[150px_150px_auto]">
@@ -324,7 +327,7 @@ export default async function MonitoringPage({
             <select
               name="alertStatus"
               defaultValue={alertFilters.status ?? ""}
-              className="rounded-xl border border-ink/15 bg-white px-3 py-2.5 text-sm text-ink outline-none focus:border-ink/35"
+              className="field-input py-[0.62rem]"
             >
               <option value="">All status</option>
               {ALERT_STATUSES.map((status) => (
@@ -336,7 +339,7 @@ export default async function MonitoringPage({
             <select
               name="severity"
               defaultValue={alertFilters.severity ?? ""}
-              className="rounded-xl border border-ink/15 bg-white px-3 py-2.5 text-sm text-ink outline-none focus:border-ink/35"
+              className="field-input py-[0.62rem]"
             >
               <option value="">All severity</option>
               {ALERT_SEVERITIES.map((severity) => (
@@ -347,19 +350,23 @@ export default async function MonitoringPage({
             </select>
             <button
               type="submit"
-              className="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-shell transition hover:bg-ink/92"
+              className="btn-primary px-4 py-2 text-[11px]"
             >
               Filter
             </button>
           </form>
         </div>
 
-        <div className="mt-4 grid gap-3">
+        <p className="mt-6 text-sm text-ink/62">
+          Showing <span className="font-semibold text-ink">{alerts.length}</span> alert records.
+        </p>
+
+        <div className="mt-3 grid gap-3">
           {alerts.length > 0 ? (
             alerts.map((alert) => (
               <article
                 key={alert.id}
-                className="rounded-[1rem] border border-ink/10 bg-white/88 p-4"
+                className="rounded-[1rem] border border-ink/10 bg-white/90 p-4 transition-colors hover:bg-signal/15"
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="text-sm font-semibold text-ink">

@@ -23,8 +23,10 @@ export function AuthSubmitButton({
     <button
       type="submit"
       disabled={disabled || pending}
+      aria-busy={pending}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-2xl bg-ink px-4 py-3 text-sm font-semibold text-shell transition hover:bg-ink/92 disabled:cursor-not-allowed disabled:bg-ink/45",
+        "btn-primary rounded-2xl px-5 py-3 text-[11px]",
+        "disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
     >

@@ -3,7 +3,15 @@ export type CaseCreateFormValues = Partial<
 >;
 
 export type CaseUpdateFormValues = Partial<
-  Record<"caseId" | "status" | "resolutionDecision" | "assignedTo" | "notes", string>
+  Record<
+    | "caseId"
+    | "status"
+    | "resolutionDecision"
+    | "assignedTo"
+    | "notes"
+    | "requestAdditionalDocuments",
+    string
+  >
 >;
 
 export type CaseFormState<TValues> = {

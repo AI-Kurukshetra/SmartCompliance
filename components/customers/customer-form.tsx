@@ -28,7 +28,7 @@ type CustomerFormProps = {
 };
 
 const inputClassName =
-  "w-full rounded-2xl border border-ink/18 bg-white px-12 py-3 text-sm text-ink shadow-[0_1px_0_rgba(9,24,43,0.03)] outline-none transition placeholder:text-ink/35 focus:border-ink/40 focus:ring-2 focus:ring-ink/10";
+  "field-input field-input-icon";
 
 function formatRiskLabel(value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1);
@@ -58,7 +58,7 @@ export function CustomerForm({
 
       <section className="grid gap-5 rounded-[1.6rem] border border-ink/10 bg-white/85 p-5 md:grid-cols-2 md:p-6">
         <div className="md:col-span-2">
-          <p className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-ink/52">
+          <p className="app-kicker flex items-center gap-2">
             <UserBadgeIcon className="h-4 w-4" />
             Identity details
           </p>
@@ -125,7 +125,7 @@ export function CustomerForm({
 
       <section className="grid gap-5 rounded-[1.6rem] border border-ink/10 bg-white/85 p-5 md:grid-cols-2 md:p-6">
         <div className="md:col-span-2">
-          <p className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-ink/52">
+          <p className="app-kicker flex items-center gap-2">
             <ActivityIcon className="h-4 w-4" />
             Contact and risk
           </p>

@@ -37,7 +37,27 @@ export async function PATCH(request: Request, context: CaseParams) {
   }
 
   const body = await request.json();
-  const parsedBody = updateCaseSchema.safeParse(body);
+  const shouldRequestAdditionalDocuments =
+    body?.requestAdditionalDocuments === true ||
+    body?.requestAdditionalDocuments === "true" ||
+    body?.requestAdditionalDocuments === "on" ||
+    body?.requestAdditionalDocuments === 1 ||
+    body?.requestAdditionalDocuments === "1";
+
+  const requestNote = "Additional documentation requested from customer.";
+  const normalizedBody = shouldRequestAdditionalDocuments
+    ? {
+        ...body,
+        status: "in_review",
+        resolutionDecision: undefined,
+        notes:
+          typeof body?.notes === "string" && body.notes.trim().length > 0
+            ? `${requestNote}\n${body.notes}`
+            : requestNote,
+      }
+    : body;
+
+  const parsedBody = updateCaseSchema.safeParse(normalizedBody);
 
   if (!parsedBody.success) {
     return NextResponse.json(

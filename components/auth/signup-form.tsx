@@ -18,16 +18,16 @@ type SignupFormProps = {
 };
 
 const inputClassName =
-  "w-full rounded-2xl border border-ink/14 bg-white px-12 py-3 text-sm text-ink shadow-[0_1px_0_rgba(9,24,43,0.03)] outline-none transition placeholder:text-ink/35 focus:border-ink/35 focus:ring-2 focus:ring-ink/10";
+  "field-input field-input-icon";
 
 export function SignupForm({ disabled = false }: SignupFormProps) {
   const [state, formAction] = useActionState(signupAction, INITIAL_AUTH_FORM_STATE);
 
   return (
-    <form action={formAction} className="mt-8 grid gap-6">
-      <div className="grid gap-4 rounded-[1.4rem] border border-ink/10 bg-white/80 p-4 md:grid-cols-2 md:p-5">
+    <form action={formAction} className="mt-2 grid gap-6">
+      <div className="grid gap-4 rounded-[1.4rem] border border-ink/10 bg-white/84 p-4 md:grid-cols-2 md:p-5">
         <div className="md:col-span-2">
-          <p className="text-xs uppercase tracking-[0.28em] text-ink/52">Workspace</p>
+          <p className="app-kicker">Workspace</p>
         </div>
         <label className="grid gap-2 text-sm font-medium text-ink">
           <span>Workspace name</span>
@@ -58,9 +58,9 @@ export function SignupForm({ disabled = false }: SignupFormProps) {
           </span>
         </label>
       </div>
-      <div className="grid gap-4 rounded-[1.4rem] border border-ink/10 bg-white/80 p-4 md:grid-cols-2 md:p-5">
+      <div className="grid gap-4 rounded-[1.4rem] border border-ink/10 bg-white/84 p-4 md:grid-cols-2 md:p-5">
         <div className="md:col-span-2">
-          <p className="text-xs uppercase tracking-[0.28em] text-ink/52">Owner account</p>
+          <p className="app-kicker">Owner account</p>
         </div>
         <label className="grid gap-2 text-sm font-medium text-ink">
           <span>Admin name</span>
@@ -118,7 +118,7 @@ export function SignupForm({ disabled = false }: SignupFormProps) {
         disabled={disabled}
         idleLabel="Create workspace"
         pendingLabel="Provisioning workspace..."
-        className="px-5 py-3"
+        className="w-full sm:w-auto sm:px-6"
       />
     </form>
   );

@@ -11,7 +11,7 @@ type GenerateReportFormProps = {
 };
 
 const inputClassName =
-  "w-full rounded-2xl border border-ink/20 bg-white px-4 py-3 text-sm text-ink shadow-[0_1px_0_rgba(9,24,43,0.03)] outline-none transition placeholder:text-ink/35 focus:border-ink/40 focus:ring-2 focus:ring-ink/10";
+  "field-input";
 
 function formatLabel(value: string) {
   return value.replaceAll("_", " ");
@@ -69,3 +69,4 @@ export function GenerateReportForm({ disabled = false }: GenerateReportFormProps
     </form>
   );
 }
+

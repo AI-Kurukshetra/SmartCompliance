@@ -48,7 +48,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             <span className="inline-flex rounded-xl bg-ink p-2 text-shell">
               <ShieldCheckIcon />
             </span>
-            <p className="text-xs uppercase tracking-[0.3em] text-ink/55">Secure access</p>
+            <p className="app-kicker">Secure access</p>
           </div>
           <h1 className="mt-4 font-[var(--font-display)] text-5xl leading-[0.95] text-ink">
             Sign in
@@ -71,16 +71,16 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           <div className="mt-6">
             <LoginForm disabled={!isAuthEnabled} />
           </div>
-          <div className="mt-6 flex gap-2">
+          <div className="mt-6 flex flex-wrap gap-2">
             <Link
               href="/"
-              className="rounded-xl border border-ink/15 px-4 py-2.5 text-sm font-semibold text-ink transition hover:border-ink/30 hover:bg-white"
+              className="btn-secondary px-4 py-2 text-[11px]"
             >
-              Back to landing
+              Back
             </Link>
             <Link
               href="/signup"
-              className="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-shell transition hover:bg-ink/92"
+              className="btn-primary px-4 py-2 text-[11px]"
             >
               Create workspace
             </Link>
@@ -103,7 +103,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             </p>
             <p className="flex items-center gap-2 rounded-xl border border-ink/10 bg-white/85 px-3 py-2 text-sm text-ink/70">
               <SparklesIcon className="h-4 w-4 text-ink/55" />
-              Continue customer, verification, and report workflows.
+              Resume customer, verification, and reporting workflows instantly.
             </p>
           </div>
         </aside>

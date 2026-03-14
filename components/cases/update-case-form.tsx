@@ -20,7 +20,7 @@ type UpdateCaseFormProps = {
 };
 
 const inputClassName =
-  "w-full rounded-2xl border border-ink/20 bg-white px-4 py-3 text-sm text-ink shadow-[0_1px_0_rgba(9,24,43,0.03)] outline-none transition placeholder:text-ink/35 focus:border-ink/40 focus:ring-2 focus:ring-ink/10";
+  "field-input";
 
 function formatLabel(value: string) {
   return value.replaceAll("_", " ");
@@ -120,6 +120,25 @@ export function UpdateCaseForm({
         />
       </label>
 
+      <label className="flex items-center gap-3 rounded-2xl border border-ink/12 bg-shell px-4 py-3 text-sm font-medium text-ink">
+        <input
+          type="checkbox"
+          name="requestAdditionalDocuments"
+          value="true"
+          defaultChecked={
+            state.values.requestAdditionalDocuments === "true" ||
+            state.values.requestAdditionalDocuments === "on"
+          }
+          disabled={disabled}
+          className="h-4 w-4 rounded border-ink/30"
+        />
+        Request additional documentation from customer
+      </label>
+      <p className="text-xs text-ink/55">
+        This sets case status to <strong>in review</strong> and records a request
+        note.
+      </p>
+
       {state.error ? (
         <p className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
           {state.error}
@@ -134,3 +153,4 @@ export function UpdateCaseForm({
     </form>
   );
 }
+

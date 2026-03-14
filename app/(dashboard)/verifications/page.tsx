@@ -135,9 +135,7 @@ export default async function VerificationsPage({
               <span className="inline-flex rounded-xl bg-ink p-2 text-shell">
                 <ShieldCheckIcon />
               </span>
-              <p className="text-xs uppercase tracking-[0.3em] text-ink/55">
-                Verification pipeline
-              </p>
+              <p className="app-kicker">Verification pipeline</p>
             </div>
             <h1 className="font-[var(--font-display)] text-4xl leading-tight text-ink md:text-5xl">
               Verifications
@@ -151,10 +149,10 @@ export default async function VerificationsPage({
             <Link
               href={canManage ? "/verifications/new" : "/verifications"}
               aria-disabled={!canManage}
-              className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
+              className={`px-4 py-2 text-[11px] ${
                 canManage
-                  ? "bg-ink text-shell hover:bg-ink/92"
-                  : "cursor-not-allowed border border-ink/15 text-ink/45"
+                  ? "btn-primary"
+                  : "btn-secondary cursor-not-allowed border-ink/15 text-ink/45 opacity-50"
               }`}
             >
               New session
@@ -162,10 +160,10 @@ export default async function VerificationsPage({
             <Link
               href={canManage ? "/verifications/upload" : "/verifications"}
               aria-disabled={!canManage}
-              className={`rounded-xl border px-4 py-2.5 text-sm font-semibold transition ${
+              className={`px-4 py-2 text-[11px] ${
                 canManage
-                  ? "border-ink/20 text-ink hover:border-ink/35 hover:bg-white"
-                  : "cursor-not-allowed border-ink/15 text-ink/45"
+                  ? "btn-secondary"
+                  : "btn-secondary cursor-not-allowed border-ink/15 text-ink/45 opacity-50"
               }`}
             >
               Upload document
@@ -173,10 +171,10 @@ export default async function VerificationsPage({
             <Link
               href={canManage ? "/verifications/screening" : "/verifications"}
               aria-disabled={!canManage}
-              className={`rounded-xl border px-4 py-2.5 text-sm font-semibold transition ${
+              className={`px-4 py-2 text-[11px] ${
                 canManage
-                  ? "border-ink/20 text-ink hover:border-ink/35 hover:bg-white"
-                  : "cursor-not-allowed border-ink/15 text-ink/45"
+                  ? "btn-secondary"
+                  : "btn-secondary cursor-not-allowed border-ink/15 text-ink/45 opacity-50"
               }`}
             >
               Run screening
@@ -184,10 +182,10 @@ export default async function VerificationsPage({
             <Link
               href={canManage ? "/verifications/decision" : "/verifications"}
               aria-disabled={!canManage}
-              className={`rounded-xl border px-4 py-2.5 text-sm font-semibold transition ${
+              className={`px-4 py-2 text-[11px] ${
                 canManage
-                  ? "border-ink/20 text-ink hover:border-ink/35 hover:bg-white"
-                  : "cursor-not-allowed border-ink/15 text-ink/45"
+                  ? "btn-secondary"
+                  : "btn-secondary cursor-not-allowed border-ink/15 text-ink/45 opacity-50"
               }`}
             >
               Run decision
@@ -196,24 +194,22 @@ export default async function VerificationsPage({
         </div>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-4">
-          <article className="rounded-[1rem] border border-ink/10 bg-white/88 p-4">
-            <p className="text-xs uppercase tracking-[0.25em] text-ink/52">Sessions</p>
+          <article className="rounded-[1rem] border border-ink/10 bg-white/90 p-4">
+            <p className="app-kicker">Sessions</p>
             <p className="mt-1 text-2xl font-semibold text-ink">{sessions.length}</p>
           </article>
-          <article className="rounded-[1rem] border border-ink/10 bg-white/88 p-4">
-            <p className="text-xs uppercase tracking-[0.25em] text-ink/52">Documents</p>
+          <article className="rounded-[1rem] border border-ink/10 bg-white/90 p-4">
+            <p className="app-kicker">Documents</p>
             <p className="mt-1 text-2xl font-semibold text-ink">{documents.length}</p>
           </article>
-          <article className="rounded-[1rem] border border-ink/10 bg-white/88 p-4">
-            <p className="text-xs uppercase tracking-[0.25em] text-ink/52">Screenings</p>
+          <article className="rounded-[1rem] border border-ink/10 bg-white/90 p-4">
+            <p className="app-kicker">Screenings</p>
             <p className="mt-1 text-2xl font-semibold text-ink">
               {watchlistResults.length}
             </p>
           </article>
-          <article className="rounded-[1rem] border border-ink/10 bg-white/88 p-4">
-            <p className="text-xs uppercase tracking-[0.25em] text-ink/52">
-              Avg OCR confidence
-            </p>
+          <article className="rounded-[1rem] border border-ink/10 bg-white/90 p-4">
+            <p className="app-kicker">Avg OCR confidence</p>
             <p className="mt-1 text-2xl font-semibold text-ink">{avgConfidence}%</p>
           </article>
         </div>
@@ -222,7 +218,7 @@ export default async function VerificationsPage({
       <article className="panel rounded-[2rem] p-6 md:p-8">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.32em] text-ink/52">Session queue</p>
+            <p className="app-kicker">Session queue</p>
             <p className="mt-2 text-sm text-ink/70">
               Filter sessions by customer name/email and verification status.
             </p>
@@ -231,13 +227,13 @@ export default async function VerificationsPage({
             <input
               name="q"
               defaultValue={filters.query ?? ""}
-              className="rounded-xl border border-ink/15 bg-white px-3 py-2.5 text-sm text-ink outline-none placeholder:text-ink/35 focus:border-ink/35"
+              className="field-input py-[0.62rem]"
               placeholder="Search customer"
             />
             <select
               name="status"
               defaultValue={filters.status ?? ""}
-              className="rounded-xl border border-ink/15 bg-white px-3 py-2.5 text-sm text-ink outline-none focus:border-ink/35"
+              className="field-input py-[0.62rem]"
             >
               <option value="">All statuses</option>
               {VERIFICATION_STATUSES.map((status) => (
@@ -248,14 +244,14 @@ export default async function VerificationsPage({
             </select>
             <button
               type="submit"
-              className="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-shell transition hover:bg-ink/92"
+              className="btn-primary px-4 py-2 text-[11px]"
             >
               Apply
             </button>
             {hasActiveFilters ? (
               <Link
                 href="/verifications"
-                className="rounded-xl border border-ink/15 px-4 py-2.5 text-center text-sm font-semibold text-ink transition hover:border-ink/30 hover:bg-white"
+                className="btn-secondary px-4 py-2 text-[11px]"
               >
                 Reset
               </Link>
@@ -270,8 +266,13 @@ export default async function VerificationsPage({
           </p>
         ) : null}
 
-        <div className="mt-6 overflow-hidden rounded-[1.2rem] border border-ink/10 bg-white/88">
-          <div className="hidden border-b border-ink/10 bg-shell/70 px-4 py-3 text-xs uppercase tracking-[0.24em] text-ink/52 md:grid md:grid-cols-[2fr_120px_120px_110px_120px_120px]">
+        <p className="mt-6 text-sm text-ink/62">
+          Showing <span className="font-semibold text-ink">{sessions.length}</span> verification
+          sessions.
+        </p>
+
+        <div className="mt-3 overflow-hidden rounded-[1.2rem] border border-ink/12 bg-white/90">
+          <div className="hidden border-b border-ink/10 bg-ink/[0.035] px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/55 md:grid md:grid-cols-[2fr_120px_120px_110px_120px_120px]">
             <p>Customer</p>
             <p>Status</p>
             <p>Decision</p>
@@ -294,7 +295,7 @@ export default async function VerificationsPage({
               return (
                 <article
                   key={session.id}
-                  className="border-b border-ink/8 px-4 py-4 last:border-b-0 md:grid md:grid-cols-[2fr_120px_120px_110px_120px_120px] md:items-center md:gap-3"
+                  className="border-b border-ink/8 px-4 py-4 transition-colors hover:bg-signal/15 last:border-b-0 md:grid md:grid-cols-[2fr_120px_120px_110px_120px_120px] md:items-center md:gap-3"
                 >
                   <div>
                     <p className="font-semibold text-ink">{session.customerName}</p>

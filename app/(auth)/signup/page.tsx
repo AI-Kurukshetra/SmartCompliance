@@ -49,7 +49,7 @@ export default async function SignupPage() {
             <span className="inline-flex rounded-xl bg-ink p-2 text-shell">
               <UsersIcon />
             </span>
-            <p className="text-xs uppercase tracking-[0.3em] text-ink/55">Workspace onboarding</p>
+            <p className="app-kicker">Workspace onboarding</p>
           </div>
           <h1 className="mt-4 font-[var(--font-display)] text-5xl leading-[0.95] text-ink">
             Create workspace
@@ -73,16 +73,16 @@ export default async function SignupPage() {
             <SignupForm disabled={!(isAuthEnabled && isAdminEnabled)} />
           </div>
 
-          <div className="mt-6 flex gap-2">
+          <div className="mt-6 flex flex-wrap gap-2">
             <Link
               href="/"
-              className="rounded-xl border border-ink/15 px-4 py-2.5 text-sm font-semibold text-ink transition hover:border-ink/30 hover:bg-white"
+              className="btn-secondary px-4 py-2 text-[11px]"
             >
-              Back to landing
+              Back
             </Link>
             <Link
               href="/login"
-              className="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-shell transition hover:bg-ink/92"
+              className="btn-primary px-4 py-2 text-[11px]"
             >
               Login
             </Link>
